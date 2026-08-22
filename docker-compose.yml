@@ -1,0 +1,53 @@
+name: full-text-search
+
+services:
+
+  acme-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_HOST: acme-postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-acme_head}
+      POSTGRES_USER: ${POSTGRES_USER:-UacmeBD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-PacmeBD2026}
+    depends_on:
+      acme-postgres:
+        condition: service_healthy
+    networks:
+      - acme-network
+    restart: unless-stopped
+
+  acme-postgres:
+    image: postgres:17.6
+    ports:
+      - "127.0.0.1:54321:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-acme_head}
+      POSTGRES_USER: ${POSTGRES_USER:-UacmeBD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-PacmeBD2026}
+    volumes:
+      - acme_ps_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - acme-network
+    restart: unless-stopped
+
+volumes:
+  acme_ps_data:
+
+networks:
+  acme-network:
+    driver: bridge

@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: full-text-search-lab
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:54321}/${POSTGRES_DB:acme_head}
+    username: ${POSTGRES_USER:UacmeBD}
+    password: ${POSTGRES_PASSWORD:PacmeBD2026}
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: always
+
+  data:
+    web:
+      pageable:
+        size-parameter: size
+        page-parameter: page
+        default-page-size: 20
+        max-page-size: 100
+        one-indexed-parameters: true
+      sort:
+        sort-parameter: sort
