@@ -24,7 +24,6 @@ public interface ArticleRepository
             @Param("limit") final int limit,
             @Param("offset") final long offset);
 
-    
     @Query("""
             SELECT id, title, content, last_mod_date
             FROM articles
@@ -44,5 +43,30 @@ public interface ArticleRepository
             @Param("term2") final String term2,
             @Param("limit") final int limit,
             @Param("offset") final long offset);
-    
+
+    @Query("""
+            SELECT id, title, content, last_mod_date
+            FROM articles
+            WHERE (
+                    LOWER(title) LIKE LOWER(CONCAT('%', :term1, '%'))
+                    OR LOWER(content) LIKE LOWER(CONCAT('%', :term1, '%'))
+                  )
+               OR (
+                    LOWER(title) LIKE LOWER(CONCAT('%', :term2, '%'))
+                    OR LOWER(content) LIKE LOWER(CONCAT('%', :term2, '%'))
+                  )
+               OR (
+                    LOWER(title) LIKE LOWER(CONCAT('%', :term3, '%'))
+                    OR LOWER(content) LIKE LOWER(CONCAT('%', :term3, '%'))
+                  )
+            ORDER BY last_mod_date DESC
+            LIMIT :limit OFFSET :offset
+            """)
+    List<Article> searchByLikeThreeTerms(
+            @Param("term1") final String term1,
+            @Param("term2") final String term2,
+            @Param("term3") final String term3,
+            @Param("limit") final int limit,
+            @Param("offset") final long offset);
+
 }

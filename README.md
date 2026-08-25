@@ -64,7 +64,7 @@ Os cenários comparam `LIKE` e FTS quanto à quantidade de resultados, tempo de 
 | 1 termo | `pesquisa` | FTS | - | - | - | - |
 | 2 termos | `pesquisa` `otimização` | LIKE | 500 | 1647.091 | 3425,323 | `Parallel Seq Scan` |
 | 2 termos | `pesquisa` `otimização` | FTS | - | - | - | - |
-| 3 termos | `pesquisa` `otimização` `documentos` | LIKE | - | - | - | - |
+| 3 termos | `pesquisa` `otimização` `documentos` | LIKE | 500 | 7427.567 | 8440,404 | `Parallel Seq Scan` |
 | 3 termos | `pesquisa` `otimização` `documentos` | FTS | - | - | - | - |
 | Morfológico | `otimização` | LIKE | - | - | - | - |
 | Morfológico | `otimização` | FTS | - | - | - | - |
@@ -81,7 +81,7 @@ Os resultados apresentam, para cada cenário e estratégia, as variações encon
 | 1 termo | `pesquisa` | FTS | - |
 | 2 termos | `pesquisa` `otimização` | LIKE | `otimização` (62), `pesquisa` (262), `pesquisadas` (48), `pesquisador` (56), `pesquisadores` (204), `pesquisando` (56), `pesquisar`  (48), `pesquisas` (90) |
 | 2 termos | `pesquisa` `otimização` | FTS | - |
-| 3 termos | `pesquisa` `otimização` `documentos` | LIKE | - |
+| 3 termos | `pesquisa` `otimização` `documentos` | LIKE | `documentos` (598), `otimização` (36), `pesquisa` (143), `pesquisadas` (38), `pesquisador` (34), `pesquisadores` (118), `pesquisando` (38), `pesquisar` (30), `pesquisas` (48) |
 | 3 termos | `pesquisa` `otimização` `documentos` | FTS | - |
 | Morfológico | `otimização` | LIKE | - |
 | Morfológico | `otimização` | FTS | - |
@@ -114,6 +114,10 @@ curl --location "http://localhost:8080/articles:like:one?term=pesquisa"
 
 ```bash
 curl --location "http://localhost:8080/articles:like:two?terms=pesquisa%2C%20otimiza%C3%A7%C3%A3o"
+```
+
+```bash
+curl --location 'localhost:8080/articles:like:three?terms=pesquisa%2C%20otimiza%C3%A7%C3%A3o%2C%20documentos'
 ```
 
 ### Remover ambiente e dados:

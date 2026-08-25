@@ -26,7 +26,7 @@ public class ArticleService {
         return repository.findById(id)
                 .orElseThrow();
     }
-    
+
     public List<Article> searchByLikeOneTerm(
             final String term,
             final Pageable pageable) {
@@ -66,6 +66,35 @@ public class ArticleService {
         var offset = pageable.getOffset();
 
         var result = repository.searchByLikeTwoTerms(terms[0], terms[1], limit, offset);
+
+        var elapsed = System.nanoTime() - start;
+
+        System.out.printf(
+                "SEARCH | strategy=LIKE | term='%s' | page=%d | size=%d | offset=%d | results=%d | elapsed=%.3f ms%n",
+                String.join(", ", terms),
+                pageable.getPageNumber() + 1,
+                pageable.getPageSize(),
+                pageable.getOffset(),
+                result.size(),
+                elapsed / 1_000_000.0);
+
+        return result;
+    }
+
+    public List<Article> searchByLikeThreeTerms(
+            final String[] terms,
+            final Pageable pageable) {
+
+        if (terms.length != 3) {
+            throw new IllegalArgumentException("São necessários exatamente 3 termos");
+        }
+
+        var start = System.nanoTime();
+
+        var limit = pageable.getPageSize();
+        var offset = pageable.getOffset();
+
+        var result = repository.searchByLikeThreeTerms(terms[0], terms[1], terms[2], limit, offset);
 
         var elapsed = System.nanoTime() - start;
 
