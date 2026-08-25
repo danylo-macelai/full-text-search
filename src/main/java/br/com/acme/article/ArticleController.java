@@ -57,4 +57,13 @@ public class ArticleController {
 
         return service.searchByLikeThreeTerms(terms, pageable);
     }
+
+    @GetMapping("/articles:like:morphological")
+    public List<Article> searchByLikeMorphological(
+            @RequestParam("term") final String term,
+            final Pageable pageable) {
+
+        return service.searchByLikeMorphological(term, pageable);
+    }
+
 }
