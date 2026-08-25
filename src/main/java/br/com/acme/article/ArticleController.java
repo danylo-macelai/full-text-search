@@ -41,4 +41,13 @@ public class ArticleController {
 
         return service.searchByLikeOneTerm(term, pageable);
     }
+    
+    
+    @GetMapping("/articles:like:two")
+    public List<Article> searchByLikeTwoTerms(
+            @RequestParam("terms") final String[] terms,
+            final Pageable pageable) {
+
+        return service.searchByLikeTwoTerms(terms, pageable);
+    }
 }

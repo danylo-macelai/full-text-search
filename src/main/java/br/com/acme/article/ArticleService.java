@@ -52,4 +52,33 @@ public class ArticleService {
         return result;
     }
 
+    public List<Article> searchByLikeTwoTerms(
+            final String[] terms,
+            final Pageable pageable) {
+
+        if (terms.length != 2) {
+            throw new IllegalArgumentException("São necessários exatamente 2 termos");
+        }
+
+        var start = System.nanoTime();
+
+        var limit = pageable.getPageSize();
+        var offset = pageable.getOffset();
+
+        var result = repository.searchByLikeTwoTerms(terms[0], terms[1], limit, offset);
+
+        var elapsed = System.nanoTime() - start;
+
+        System.out.printf(
+                "SEARCH | strategy=LIKE | term='%s' | page=%d | size=%d | offset=%d | results=%d | elapsed=%.3f ms%n",
+                String.join(", ", terms),
+                pageable.getPageNumber() + 1,
+                pageable.getPageSize(),
+                pageable.getOffset(),
+                result.size(),
+                elapsed / 1_000_000.0);
+
+        return result;
+    }
+
 }

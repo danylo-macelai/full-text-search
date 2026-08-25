@@ -62,7 +62,7 @@ Os cenários comparam `LIKE` e FTS quanto à quantidade de resultados, tempo de 
 |---|---|---|:---:|:---:|:---:|---|
 | 1 termo | `pesquisa` | LIKE | 500 | 964.543 | 879.102 | `Parallel Seq Scan` |
 | 1 termo | `pesquisa` | FTS | - | - | - | - |
-| 2 termos | `pesquisa` `otimização` | LIKE | - | - | - | - |
+| 2 termos | `pesquisa` `otimização` | LIKE | 500 | 1647.091 | 3425,323 | `Parallel Seq Scan` |
 | 2 termos | `pesquisa` `otimização` | FTS | - | - | - | - |
 | 3 termos | `pesquisa` `otimização` `documentos` | LIKE | - | - | - | - |
 | 3 termos | `pesquisa` `otimização` `documentos` | FTS | - | - | - | - |
@@ -79,7 +79,7 @@ Os resultados apresentam, para cada cenário e estratégia, as variações encon
 |---|---|---|---|
 | 1 termo | `pesquisa` | LIKE | `pesquisa` (280), `pesquisadores` (215), `pesquisas` (89), `pesquisando` (64), `pesquisadas` (62), `pesquisar` (56), `pesquisador` (56) |
 | 1 termo | `pesquisa` | FTS | - |
-| 2 termos | `pesquisa` `otimização` | LIKE | - |
+| 2 termos | `pesquisa` `otimização` | LIKE | `otimização` (62), `pesquisa` (262), `pesquisadas` (48), `pesquisador` (56), `pesquisadores` (204), `pesquisando` (56), `pesquisar`  (48), `pesquisas` (90) |
 | 2 termos | `pesquisa` `otimização` | FTS | - |
 | 3 termos | `pesquisa` `otimização` `documentos` | LIKE | - |
 | 3 termos | `pesquisa` `otimização` `documentos` | FTS | - |
@@ -110,6 +110,10 @@ docker compose ps
 
 ```bash
 curl --location "http://localhost:8080/articles:like:one?term=pesquisa"
+```
+
+```bash
+curl --location "http://localhost:8080/articles:like:two?terms=pesquisa%2C%20otimiza%C3%A7%C3%A3o"
 ```
 
 ### Remover ambiente e dados:
