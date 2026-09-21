@@ -55,4 +55,12 @@ public class ArticleController {
         return service.searchByFtsOneTerm(term, pageable);
     }
 
+    @GetMapping("/articles:fts:two")
+    public List<Article> searchByFtsTwoTerms(
+            @RequestParam("terms") final String[] terms,
+            final Pageable pageable) {
+
+        return service.searchByFtsTwoTerms(terms, pageable);
+    }
+
 }
