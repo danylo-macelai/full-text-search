@@ -61,7 +61,7 @@ Os cenários comparam `LIKE` e FTS quanto à quantidade de resultados, tempo de 
 | Cenário | Termo(s) | Estratégia | Resultados | PostgreSQL(ms) | Java (ms) | Plano |
 |---|---|---|:---:|:---:|:---:|---|
 | 1 termo | `pesquisa` | LIKE | 500 | 964.543 | 879.102 | `Parallel Seq Scan` |
-| 1 termo | `pesquisa` | FTS | - | - | - | - |
+| 1 termo | `pesquisa` | 	FTS	| 500 | 129,319 | 415,724 | Parallel Bitmap Heap Scan
 | 2 termos | `pesquisa` `otimização` | LIKE | 500 | 1647.091 | 3425,323 | `Parallel Seq Scan` |
 | 2 termos | `pesquisa` `otimização` | FTS | - | - | - | - |
 | 3 termos | `pesquisa` `otimização` `documentos` | LIKE | 500 | 7427.567 | 8440,404 | `Parallel Seq Scan` |
@@ -78,7 +78,7 @@ Os resultados apresentam, para cada cenário e estratégia, as variações encon
 | Cenário | Termo(s) | Estratégia | Variações encontradas |
 |---|---|---|---|
 | 1 termo | `pesquisa` | LIKE | `pesquisa` (280), `pesquisadores` (215), `pesquisas` (89), `pesquisando` (64), `pesquisadas` (62), `pesquisar` (56), `pesquisador` (56) |
-| 1 termo | `pesquisa` | FTS | - |
+| 1 termo | `pesquisa` | FTS | `pesquisa` (293), `pesquisadores` (210), `pesquisas` (91), `pesquisadas` (56), `pesquisador` (66), `pesquisar` (54) e `pesquisando` (54) |
 | 2 termos | `pesquisa` `otimização` | LIKE | `otimização` (62), `pesquisa` (262), `pesquisadas` (48), `pesquisador` (56), `pesquisadores` (204), `pesquisando` (56), `pesquisar`  (48), `pesquisas` (90) |
 | 2 termos | `pesquisa` `otimização` | FTS | - |
 | 3 termos | `pesquisa` `otimização` `documentos` | LIKE | `documentos` (598), `otimização` (36), `pesquisa` (143), `pesquisadas` (38), `pesquisador` (34), `pesquisadores` (118), `pesquisando` (38), `pesquisar` (30), `pesquisas` (48) |

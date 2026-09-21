@@ -47,4 +47,12 @@ public class ArticleController {
         return service.searchByLikeMorphological(term, pageable);
     }
 
+    @GetMapping("/articles:fts:one")
+    public List<Article> searchByFtsOneTerm(
+            @RequestParam("term") final String term,
+            final Pageable pageable) {
+
+        return service.searchByFtsOneTerm(term, pageable);
+    }
+
 }
