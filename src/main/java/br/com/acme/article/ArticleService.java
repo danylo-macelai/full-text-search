@@ -196,8 +196,37 @@ public class ArticleService {
         var elapsed = System.nanoTime() - start;
 
         System.out.printf(
-                "SEARCH | strategy=LIKE | term='%s' | page=%d | size=%d | offset=%d | results=%d | elapsed=%.3f ms%n",
+                "SEARCH | strategy=FTS | term='%s' | page=%d | size=%d | offset=%d | results=%d | elapsed=%.3f ms%n",
                 String.join(", ", terms),
+                pageable.getPageNumber() + 1,
+                pageable.getPageSize(),
+                pageable.getOffset(),
+                result.size(),
+                elapsed / 1_000_000.0);
+
+        return result;
+    }
+    
+    
+    public List<Article> searchByFtsMorphological(
+            final String term,
+            final Pageable pageable) {
+
+        var start = System.nanoTime();
+
+        var limit = pageable.getPageSize();
+        var offset = pageable.getOffset();
+
+        var result = repository.searchByFtsOneTerm(
+                term,
+                limit,
+                offset);
+
+        var elapsed = System.nanoTime() - start;
+
+        System.out.printf(
+                "SEARCH | strategy=FTS | type=MORPHOLOGICAL | term='%s' | page=%d | size=%d | offset=%d | results=%d | elapsed=%.3f ms%n",
+                term,
                 pageable.getPageNumber() + 1,
                 pageable.getPageSize(),
                 pageable.getOffset(),

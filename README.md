@@ -61,13 +61,13 @@ Os cenários comparam `LIKE` e FTS quanto à quantidade de resultados, tempo de 
 | Cenário | Termo(s) | Estratégia | Resultados | PostgreSQL(ms) | Java (ms) | Plano |
 |---|---|---|:---:|:---:|:---:|---|
 | 1 termo | `pesquisa` | LIKE | 500 | 964.543 | 879.102 | `Parallel Seq Scan` |
-| 1 termo | `pesquisa` | 	FTS	| 500 | 129,319 | 415,724 | Parallel Bitmap Heap Scan
+| 1 termo | `pesquisa` | 	FTS	| 500 | 129,319 | 415,724 | `Parallel Bitmap Heap Scan` |
 | 2 termos | `pesquisa` `otimização` | LIKE | 500 | 1647.091 | 3425,323 | `Parallel Seq Scan` |
-| 2 termos | `pesquisa` `otimização` | FTS |	500 | 140,348 | 156,069	| Parallel Bitmap Heap Scan
+| 2 termos | `pesquisa` `otimização` | FTS |	500 | 140,348 | 156,069	| `Parallel Bitmap Heap Scan` |
 | 3 termos | `pesquisa` `otimização` `documentos` | LIKE | 500 | 7427.567 | 8440,404 | `Parallel Seq Scan` |
-| 3 termos | `pesquisa` `otimização` `documentos` | FTS | 500 | 164,463	| Parallel Seq Scan
+| 3 termos | `pesquisa` `otimização` `documentos` | FTS | 500 | 164,463	| `Parallel Seq Scan`
 | Morfológico | `otimização` | LIKE | 500 | 2302.710 | 2117,170 | `Parallel Seq Scan` |
-| Morfológico | `otimização` | FTS | - | - | - | - |
+| Morfológico | `otimização` | FTS | 500 | 95,357 | 398,292 | `Parallel Bitmap Heap Scan` |
 
 ---
 
@@ -84,7 +84,7 @@ Os resultados apresentam, para cada cenário e estratégia, as variações encon
 | 3 termos | `pesquisa` `otimização` `documentos` | LIKE | `documentos` (598), `otimização` (36), `pesquisa` (143), `pesquisadas` (38), `pesquisador` (34), `pesquisadores` (118), `pesquisando` (38), `pesquisar` (30), `pesquisas` (48) |
 | 3 termos | `pesquisa` `otimização` `documentos` | FTS | `documentos` (382) `otimização` (44) `otimizações` (54) `otimizada` (62) `otimizadas` (54) `otimizando` (34) `otimizar` (38) `pesquisa` (203) `pesquisadas` (38) `pesquisador` (36) `pesquisadores` (149) `pesquisando` (40) `pesquisar` (44) `pesquisas` (78) |
 | Morfológico | `otimização` | LIKE | `otimização` (1000) |
-| Morfológico | `otimização` | FTS | - |
+| Morfológico | `otimização` | FTS | `otimização`(44) `otimizações`(54) `otimizada`(62) `otimizadas`(54) `otimizando`(34) `otimizar`(38) |
 
 ---
 
@@ -130,6 +130,10 @@ curl --location 'localhost:8080/articles:fts:one?term=pesquisa'
 
 ```bash
 curl --location 'localhost:8080/articles:fts:two?terms=pesquisa%2C%20otimiza%C3%A7%C3%A3o'
+```
+
+```bash
+curl --location 'localhost:8080/articles:fts:morphological?term=otimiza%C3%A7%C3%A3o'
 ```
 
 ### Remover ambiente e dados:

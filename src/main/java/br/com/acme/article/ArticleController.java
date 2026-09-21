@@ -71,4 +71,12 @@ public class ArticleController {
         return service.searchByFtsThreeTerms(terms, pageable);
     }
 
+    @GetMapping("/articles:fts:morphological")
+    public List<Article> searchByFtsMorphological(
+            @RequestParam("term") final String term,
+            final Pageable pageable) {
+
+        return service.searchByFtsMorphological(term, pageable);
+    }
+
 }
