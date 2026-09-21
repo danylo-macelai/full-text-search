@@ -63,4 +63,12 @@ public class ArticleController {
         return service.searchByFtsTwoTerms(terms, pageable);
     }
 
+    @GetMapping("/articles:fts:three")
+    public List<Article> searchByFtsThreeTerms(
+            @RequestParam("terms") final String[] terms,
+            final Pageable pageable) {
+
+        return service.searchByFtsThreeTerms(terms, pageable);
+    }
+
 }

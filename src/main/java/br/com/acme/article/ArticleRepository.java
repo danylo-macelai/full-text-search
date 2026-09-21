@@ -98,4 +98,22 @@ public interface ArticleRepository
             @Param("term2") final String term2,
             @Param("limit") final int limit,
             @Param("offset") final long offset);
+
+    @Query("""
+            SELECT id, title, content, last_mod_date
+            FROM articles
+            WHERE search_vector @@
+                  websearch_to_tsquery(
+                      'portuguese',
+                      :term1 || ' OR ' || :term2 || ' OR ' || :term3
+                  )
+            ORDER BY last_mod_date DESC
+            LIMIT :limit OFFSET :offset
+            """)
+    List<Article> searchByFtsThreeTerms(
+            @Param("term1") final String term1,
+            @Param("term2") final String term2,
+            @Param("term3") final String term3,
+            @Param("limit") final int limit,
+            @Param("offset") final long offset);
 }
